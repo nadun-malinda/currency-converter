@@ -32,7 +32,11 @@ const Details = ({ countryData, error }) => {
 
     return (
         <div className={classes.Details}>
-            {Object.keys(countryData).length > 0 ? renderDetails() : <Empty description={getEmptyDescription()} />}
+            {
+                Object.keys(countryData).length > 0 ?
+                    renderDetails() :
+                    <Empty description={getEmptyDescription()} />
+            }
         </div>
     )
 }

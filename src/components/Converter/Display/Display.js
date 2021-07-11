@@ -17,7 +17,9 @@ const Display = React.memo(({ loading, rate, currency }) => {
     return (
         <div className={classes.Display}>
             <h3>Exchange Rate</h3>
-            <h1>{loading ? <LoadingOutlined style={{ fontSize: 24 }} spin /> : getRateString(rate, currency)}</h1>
+            <div className={classes.RateCurrencyWrap}>
+                {loading ? <LoadingOutlined style={{ fontSize: 24 }} spin /> : getRateString(rate, currency)}
+            </div>
         </div>
     )
 })

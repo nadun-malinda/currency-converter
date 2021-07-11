@@ -14,15 +14,12 @@ const Converter = ({ currencies }) => {
     const [amount, setAmount] = useState(0)
     const [currency, setCurrency] = useState(null)
     const [rate, setRate] = useState(0)
-    const { loading, error, getCurrencyExchange } = useHttp()
     const formRef = useRef(null)
 
-    // effect to run when currencies prop change
-    useEffect(() => {
-        formRef.current.setFieldsValue({ amount: 0 })
-        setAmount(0)
-        setRate(0)
+    // custom hook
+    const { loading, error, getCurrencyExchange } = useHttp()
 
+    useEffect(() => {
         if (currencies.length > 0) {
             formRef.current.setFieldsValue({ toCurrency: currencies[0].code })
             setCurrency(currencies[0].code)
@@ -35,10 +32,14 @@ const Converter = ({ currencies }) => {
     // effect to run when change currency selection dropdown.
     // need to reset form values.
     useEffect(() => {
+        resetForm()
+    }, [currency])
+
+    const resetForm = () => {
         formRef.current.setFieldsValue({ amount: 0 })
         setAmount(0)
         setRate(0)
-    }, [currency])
+    }
 
     // on submit the form
     const onConvert = ({ toCurrency }) => {
@@ -46,7 +47,7 @@ const Converter = ({ currencies }) => {
             symbols: `${toCurrency},${FROM_CURRENCY}`
         }
         getCurrencyExchange('/latest', params)
-            .then(({ rates }) => {
+            .then((rates) => {
                 const exchangeRate = getExchangeRate(amount, rates, currency, FROM_CURRENCY)
                 setRate(exchangeRate)
             })

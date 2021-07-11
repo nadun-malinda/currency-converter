@@ -7,15 +7,23 @@ import classes from './ConvertForm.module.scss'
 import { FROM_CURRENCY } from '../../../constants'
 const { Option } = Select
 
-const ConvertForm = ({
-    formRef,
-    amount,
-    currency,
-    currencies,
-    setAmount,
-    setCurrency,
-    onConvert,
-    loading }) => {
+const ConvertForm = (props) => {
+    const {
+        formRef,
+        amount,
+        currency,
+        currencies,
+        setAmount,
+        setCurrency,
+        onConvert,
+        loading
+    } = props
+
+    const handleOnChange = (value) => {
+        // amout should be type of number
+        setAmount(Number(value))
+    }
+
     return (
         <Form
             ref={formRef}
@@ -32,7 +40,7 @@ const ConvertForm = ({
                             min={0}
                             step="any"
                             allowClear={true}
-                            onChange={(event) => setAmount(Number(event.target.value))}
+                            onChange={(event) => handleOnChange(event.target.value)}
                             disabled={!currency} />
                     </Form.Item>
                 </Col>

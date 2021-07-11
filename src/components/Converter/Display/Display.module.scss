@@ -1,10 +1,11 @@
 .Display {
-    h1 {
+    .RateCurrencyWrap {
         word-wrap: break-word;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;
+        min-height: 70px;
 
         :global(.ant-statistic-content) {
             font-size: 2rem;
@@ -12,7 +13,9 @@
         }
 
         .Currency {
+            font-size: 1.75rem;
             margin-left: 10px;
+            font-weight: 100;
         }
     }
 }

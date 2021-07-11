@@ -9,8 +9,10 @@ import classes from './Search.module.scss'
 const Search = ({ onSelectCountry, onSearchError }) => {
     const [searchText, setSearchText] = useState('')
     const [options, setOptions] = useState([])
-    const { error, getCountries } = useHttp()
     const inputRef = useRef()
+
+    // custom hooks
+    const { error, getCountries } = useHttp()
     const debounceSearchText = useDebounce(searchText, 500)
 
     useEffect(() => {
@@ -40,11 +42,11 @@ const Search = ({ onSelectCountry, onSearchError }) => {
         }
     }, [debounceSearchText, getCountries])
 
-    const onSelect = (_, { data }) => {
+    const handleOnSelect = (_, { data }) => {
         onSelectCountry(data)
     }
 
-    const onChange = (value) => {
+    const handleOnChange = (value) => {
         setSearchText(value ? value : '')
     }
 
@@ -58,8 +60,8 @@ const Search = ({ onSelectCountry, onSearchError }) => {
                 options={options}
                 allowClear={true}
                 style={{ width: '100%' }}
-                onSelect={onSelect}
-                onChange={onChange}
+                onSelect={handleOnSelect}
+                onChange={handleOnChange}
                 placeholder="Search for a country" />
         </div>
     )
