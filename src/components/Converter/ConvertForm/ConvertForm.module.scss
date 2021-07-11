@@ -1,0 +1,22 @@
+.Form {
+    text-align: left;
+
+    :global(.ant-row) {
+        margin-bottom: 10px;
+    }
+
+    .MiddleIcon {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .Icon {
+            margin-top: 10px;
+            font-size: 1rem;
+        }
+    }
+
+    .Select {
+        display: block;
+    }
+}

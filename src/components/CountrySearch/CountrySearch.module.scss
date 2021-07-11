@@ -1,0 +1,10 @@
+@import '../../sass/animations';
+@import '../../sass/mixins';
+
+.CountrySearch {
+    margin-bottom: 20px;
+    padding: 30px;
+    border-radius: 10px;
+    -webkit-animation: fade-in-right 1.5s cubic-bezier(0.445, 0.050, 0.550, 0.950) 0.5s both;
+	        animation: fade-in-right 1.5s cubic-bezier(0.445, 0.050, 0.550, 0.950) 0.5s both;
+}

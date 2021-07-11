@@ -1,0 +1,16 @@
+.Search {
+    position: relative;
+
+    .SearchIcon {
+        position: absolute;
+        z-index: 1;
+        font-size: 1.2rem;
+        top: 11px;
+        left: 11px;
+        color: #bfbfbf;
+    }
+    :global(.ant-select-selection-search-input),
+    :global(.ant-select-selection-placeholder) {
+        padding-left: 26px !important; 
+    }
+}

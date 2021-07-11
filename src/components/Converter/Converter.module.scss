@@ -1,0 +1,12 @@
+@import '../../sass//animations';
+@import '../../sass/mixins';
+
+.Converter {
+    @include commonBoxShadow();
+    padding: 30px;
+    background-color: #fff;
+    text-align: center;
+    border-radius: 10px;
+    -webkit-animation: fade-in-left 1.5s cubic-bezier(0.445, 0.050, 0.550, 0.950) 0.5s both;
+	        animation: fade-in-left 1.5s cubic-bezier(0.445, 0.050, 0.550, 0.950) 0.5s both;
+}

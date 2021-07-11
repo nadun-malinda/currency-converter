@@ -1,0 +1,18 @@
+.Display {
+    h1 {
+        word-wrap: break-word;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+
+        :global(.ant-statistic-content) {
+            font-size: 2rem;
+            word-break: break-word;
+        }
+
+        .Currency {
+            margin-left: 10px;
+        }
+    }
+}

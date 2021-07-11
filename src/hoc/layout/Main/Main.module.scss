@@ -1,0 +1,19 @@
+@import '../../../sass/mixins';
+
+.Main {
+    max-width: 360px;
+    min-height: 300px;
+    padding: 20px;
+
+    @include mdMinBreakPoint {
+        max-width: none;
+        margin: 0;
+        padding: 40px;
+        width: 850px;
+        background-color: $primaryLightBlue;
+    }
+}
+
+.Row {
+    align-items: center;
+}

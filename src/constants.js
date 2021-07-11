@@ -1,0 +1,1 @@
+export const FROM_CURRENCY = 'SEK'
