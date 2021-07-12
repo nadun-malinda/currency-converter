@@ -13,7 +13,7 @@ const Search = ({ onSelectCountry, onSearchError }) => {
 
     // custom hooks
     const { error, getCountries } = useHttp()
-    const debounceSearchText = useDebounce(searchText, 500)
+    const debounceSearchText = useDebounce(searchText, 300)
 
     useEffect(() => {
         if (error) {
