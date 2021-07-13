@@ -6,7 +6,7 @@ Because of that you have to clone the repo and follow normal steps to run it in 
 
 - git clone https://github.com/nadun-malinda/currency-converter.git
 - npm install
-- npm run
+- npm start
 
 However, the interface and the country search feature can be seen here https://nadun-malinda.github.io/currency-converter/
 
