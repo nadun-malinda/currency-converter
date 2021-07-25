@@ -1,27 +1,31 @@
+// redux and prop-type validations
+import { useSelector, useDispatch } from 'react-redux'
+import { converterActions } from '../../../store/converter'
 import PropTypes from 'prop-types'
+
+// ant design components and icons
 import { Form, Input, Select, Button, Row, Col } from 'antd'
 import { ArrowRightOutlined } from '@ant-design/icons'
+
+// component styles
 import classes from './ConvertForm.module.scss'
 
 // constants
 import { FROM_CURRENCY } from '../../../constants'
 const { Option } = Select
 
-const ConvertForm = (props) => {
-    const {
-        formRef,
-        amount,
-        currency,
-        currencies,
-        setAmount,
-        setCurrency,
-        onConvert,
-        loading
-    } = props
+const ConvertForm = ({ formRef, onConvert, loading }) => {
+    const { currencies } = useSelector(state => state.search)
+    const { amount, currency } = useSelector(state => state.converter)
+    const dispatch = useDispatch()
 
     const handleOnChange = (value) => {
         // amout should be type of number
-        setAmount(Number(value))
+        dispatch(converterActions.setAmount(Number(value)))
+    }
+
+    const handleOnSelectCurrency = (currency) => {
+        dispatch(converterActions.setCurrency(currency))
     }
 
     return (
@@ -68,7 +72,7 @@ const ConvertForm = (props) => {
                         <Select
                             value={currency}
                             options={currencies.map(currency => ({ value: currency.code }))}
-                            onChange={(value) => setCurrency(value)}
+                            onChange={(value) => handleOnSelectCurrency(value)}
                             disabled={!currency}
                             className={classes.Select} />
                     </Form.Item>
@@ -92,17 +96,10 @@ const ConvertForm = (props) => {
 
 ConvertForm.propTypes = {
     formRef: PropTypes.object.isRequired,
-    amount: PropTypes.number.isRequired,
-    currency: PropTypes.string,
-    currencies: PropTypes.array,
-    setAmount: PropTypes.func.isRequired,
-    setCurrency: PropTypes.func.isRequired,
     onConvert: PropTypes.func.isRequired,
     loading: PropTypes.bool
 }
 ConvertForm.defaultProps = {
-    currency: null,
-    currencies: [],
     loading: false
 }
 

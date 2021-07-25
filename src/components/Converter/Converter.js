@@ -1,45 +1,51 @@
-import { useState, useEffect, useRef } from 'react'
-import PropTypes from 'prop-types'
+// react and redux
+import { useEffect, useRef } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { converterActions } from '../../store/converter'
+
+// custom hooks
+import useHttp from '../../hooks/http'
+
+// utilities
 import { getExchangeRate } from '../../utils/utils'
+
+// dependant components
 import Display from './Display/Display'
 import ConvertForm from './ConvertForm/ConvertForm'
 import Error from '../UI/Error/Error'
-import useHttp from '../../hooks/http'
+
+// compoment styles
 import classes from './Converter.module.scss'
 
 // constants
 import { FROM_CURRENCY } from '../../constants'
 
-const Converter = ({ currencies }) => {
-    const [amount, setAmount] = useState(0)
-    const [currency, setCurrency] = useState(null)
-    const [rate, setRate] = useState(0)
+const Converter = () => {
     const formRef = useRef(null)
+    const { currencies } = useSelector(state => state.search)
+    const { amount, currency } = useSelector(state => state.converter)
+    const dispatch = useDispatch()
 
-    // custom hook
+    // custom hook call
     const { loading, error, getCurrencyExchange } = useHttp()
 
     useEffect(() => {
         if (currencies.length > 0) {
             formRef.current.setFieldsValue({ toCurrency: currencies[0].code })
-            setCurrency(currencies[0].code)
+            dispatch(converterActions.setCurrency(currencies[0].code))
         } else {
             formRef.current.setFieldsValue({ toCurrency: null })
-            setCurrency(null)
+            dispatch(converterActions.setCurrency(null))
         }
-    }, [currencies])
+    }, [currencies, dispatch])
 
     // effect to run when change currency selection dropdown.
     // need to reset form values.
     useEffect(() => {
-        resetForm()
-    }, [currency])
-
-    const resetForm = () => {
         formRef.current.setFieldsValue({ amount: 0 })
-        setAmount(0)
-        setRate(0)
-    }
+        dispatch(converterActions.setAmount(0))
+        dispatch(converterActions.setRate(0))
+    }, [currency, dispatch])
 
     // on submit the form
     const onConvert = ({ toCurrency }) => {
@@ -49,33 +55,21 @@ const Converter = ({ currencies }) => {
         getCurrencyExchange('/latest', params)
             .then((rates) => {
                 const exchangeRate = getExchangeRate(amount, rates, currency, FROM_CURRENCY)
-                setRate(exchangeRate)
+                dispatch(converterActions.setRate(exchangeRate))
             })
     }
 
     return (
         <div className={classes.Converter}>
-            <Display loading={loading} rate={rate} currency={currency} />
+            <Display loading={loading} />
             <ConvertForm
                 formRef={formRef}
-                amount={amount}
-                currency={currency}
-                currencies={currencies}
-                setAmount={setAmount}
-                setCurrency={setCurrency}
                 onConvert={onConvert}
                 loading={loading} />
 
             {error && <Error message={error} />}
         </div>
     )
-}
-
-Converter.propTypes = {
-    currencies: PropTypes.array
-}
-Converter.defaultProps = {
-    currencies: []
 }
 
 export default Converter

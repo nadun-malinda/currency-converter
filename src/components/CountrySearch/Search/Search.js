@@ -1,26 +1,35 @@
+// react and redux
 import { useState, useEffect, useRef } from 'react'
-import PropTypes from 'prop-types'
+import { useDispatch } from 'react-redux'
+import { searchActions } from '../../../store/search'
+
+// ant design components and icons
 import { AutoComplete } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
+
+// custom hooks
 import useHttp from '../../../hooks/http'
 import useDebounce from '../../../hooks/debounce'
+
+// component styles
 import classes from './Search.module.scss'
 
-const Search = ({ onSelectCountry, onSearchError }) => {
+const Search = () => {
     const [searchText, setSearchText] = useState('')
     const [options, setOptions] = useState([])
     const inputRef = useRef()
+    const dispatch = useDispatch()
 
-    // custom hooks
+    // custom hooks call
     const { error, getCountries } = useHttp()
     const debounceSearchText = useDebounce(searchText, 300)
 
     useEffect(() => {
         if (error) {
             setOptions([])
-            onSearchError(error)
+            dispatch(searchActions.setError(error))
         }
-    }, [error, onSearchError])
+    }, [error, dispatch])
 
     useEffect(() => {
         if (debounceSearchText === '') {
@@ -43,7 +52,8 @@ const Search = ({ onSelectCountry, onSearchError }) => {
     }, [debounceSearchText, getCountries])
 
     const handleOnSelect = (_, { data }) => {
-        onSelectCountry(data)
+        dispatch(searchActions.setCountry(data))
+        dispatch(searchActions.setCurrencies(data.currencies))
     }
 
     const handleOnChange = (value) => {
@@ -65,11 +75,6 @@ const Search = ({ onSelectCountry, onSearchError }) => {
                 placeholder="Search for a country" />
         </div>
     )
-}
-
-Search.propTypes = {
-    onSelectCountry: PropTypes.func.isRequired,
-    onSearchError: PropTypes.func.isRequired
 }
 
 export default Search

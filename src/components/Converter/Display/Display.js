@@ -1,9 +1,15 @@
+// react and redux
 import React from 'react'
-import PropTypes from 'prop-types'
+import { useSelector } from 'react-redux'
+
+// ant design components and isons
 import { Statistic } from 'antd'
 import { LoadingOutlined } from '@ant-design/icons'
+
+// component styles
 import classes from './Display.module.scss'
 
+// get convertion rate
 const getRateString = (rate, currency) => {
     return (
         <>
@@ -13,7 +19,9 @@ const getRateString = (rate, currency) => {
     )
 }
 
-const Display = React.memo(({ loading, rate, currency }) => {
+const Display = React.memo(({ loading }) => {
+    const { rate, currency } = useSelector(state => state.converter)
+
     return (
         <div className={classes.Display}>
             <h3>Exchange Rate</h3>
@@ -23,13 +31,5 @@ const Display = React.memo(({ loading, rate, currency }) => {
         </div>
     )
 })
-
-Display.propTypes = {
-    rate: PropTypes.number.isRequired,
-    currency: PropTypes.string
-}
-Display.defaultProps = {
-    currency: null
-}
 
 export default Display
