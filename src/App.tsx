@@ -5,7 +5,7 @@ import Main from './hoc/layout/Main/Main'
 import CountrySearch from './components/CountrySearch/CountrySearch'
 import Converter from './components/Converter/Converter'
 
-function App() {
+const App: React.FC = () => {
   const [currencies, setCurrencies] = useState([])
 
   const handleOnSetCurrencies = useCallback(currencies => {

@@ -1,15 +1,26 @@
 import { useState, useEffect, useRef } from 'react'
-import PropTypes from 'prop-types'
 import { AutoComplete } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 import useHttp from '../../../hooks/http'
 import useDebounce from '../../../hooks/debounce'
 import classes from './Search.module.scss'
 
-const Search = ({ onSelectCountry, onSearchError }) => {
-    const [searchText, setSearchText] = useState('')
-    const [options, setOptions] = useState([])
-    const inputRef = useRef()
+import { Country } from '../../../types/types'
+
+type PropTypes = {
+    onSelectCountry: (countryData: any) => void,
+    onSearchError: (error: string) => void
+}
+
+type Options = {
+    value: string,
+    data: object
+}
+
+const Search: React.FC<PropTypes> = ({ onSelectCountry, onSearchError }) => {
+    const [searchText, setSearchText] = useState<string>('')
+    const [options, setOptions] = useState<Options[]>([])
+    const inputRef = useRef<HTMLInputElement>(null)
 
     // custom hooks
     const { error, getCountries } = useHttp()
@@ -32,7 +43,7 @@ const Search = ({ onSelectCountry, onSearchError }) => {
             const query = `${debounceSearchText}?fields=name;capital;currencies;population`
             getCountries(`/name/${query}`)
                 .then(countries => {
-                    setOptions(countries.map(country => {
+                    setOptions(countries.map((country: Country) => {
                         return {
                             value: country.name,
                             data: country
@@ -42,11 +53,12 @@ const Search = ({ onSelectCountry, onSearchError }) => {
         }
     }, [debounceSearchText, getCountries])
 
-    const handleOnSelect = (_, { data }) => {
-        onSelectCountry(data)
+    const handleOnSelect = (value: string, options: Options) => {
+        console.log('options: ', options)
+        onSelectCountry(options.data)
     }
 
-    const handleOnChange = (value) => {
+    const handleOnChange = (value: string) => {
         setSearchText(value ? value : '')
     }
 
@@ -60,16 +72,12 @@ const Search = ({ onSelectCountry, onSearchError }) => {
                 options={options}
                 allowClear={true}
                 style={{ width: '100%' }}
+                // @ts-ignore
                 onSelect={handleOnSelect}
                 onChange={handleOnChange}
                 placeholder="Search for a country" />
         </div>
     )
-}
-
-Search.propTypes = {
-    onSelectCountry: PropTypes.func.isRequired,
-    onSearchError: PropTypes.func.isRequired
 }
 
 export default Search

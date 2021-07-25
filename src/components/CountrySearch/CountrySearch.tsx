@@ -1,12 +1,16 @@
 import { useState, useCallback } from 'react'
-import PropTypes from 'prop-types'
 import Search from './Search/Search'
 import Details from './Details/Details'
 import classes from './CountrySearch.module.scss'
+import { Currencies, Error, Country } from '../../types/types'
 
-const CountrySearch = ({ onSetCurrencies }) => {
-    const [countryData, setCountryData] = useState({})
-    const [searchError, setSearchError] = useState(null)
+type PropTypes = {
+    onSetCurrencies: (currencies: Currencies) => void
+}
+
+const CountrySearch: React.FC<PropTypes> = ({ onSetCurrencies }) => {
+    const [countryData, setCountryData] = useState<Country>()
+    const [searchError, setSearchError] = useState<Error>(null)
 
     const handleSelectCountry = useCallback((countryData) => {
         setCountryData(countryData)
@@ -23,10 +27,6 @@ const CountrySearch = ({ onSetCurrencies }) => {
             <Details countryData={countryData} error={searchError} />
         </div>
     )
-}
-
-CountrySearch.propTypes = {
-    onSetCurrencies: PropTypes.func.isRequired
 }
 
 export default CountrySearch
